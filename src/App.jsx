@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { User, FolderOpen, FileText, Terminal as TerminalIcon, Mail,
   Trash2, Settings, Wifi, Volume2, ChevronUp, X, Minus, Square,
-  Github, Linkedin, Code2, Search
+  Github, Linkedin, Code2, Search, Image as ImageIcon
 } from "lucide-react";
 
 /* Portfolio content (edit this to make it yours) */
@@ -35,7 +35,7 @@ const SKILL_CATEGORIES = [
   },
 ];
 
-const REPO_URL = "";
+const REPO_URL = "https://github.com/donnellyCodes/portfolio";
 
 const WALLPAPERS = [
   "radial-gradient(1200px 700px at 20% 10%, #2e5c3e 0%, #1c3b28 38%, #0e2118 75%, #081611 100%)",
@@ -52,6 +52,7 @@ const APP_META = {
   trash: { title: "Trash", icon: Trash2, w: 340, h: 240 },
   settings: { title: "System Settings", icon: Settings, w: 420, h: 320 },
   "about-site": { title: "About This Site", icon: Code2, w: 400, h: 260 },
+  photo: { title: "portrait.jpg", icon: ImageIcon, w: 380, h: 440 },
 };
 
 let zTop = 10;
@@ -180,6 +181,8 @@ export default function MintDesktop() {
         .taskbar-win:hover { background: rgba(255,255,255,0.10); }
         .menu-item:hover { background: #4a7c3a; color: #fff; }
         .titlebar-btn:hover { filter: brightness(1.3); }
+        .portrait-widget { transition: transform 0.15s ease, border-color 0.15s ease; }
+        .portrait-widget:hover { transform: scale(1.03); border-color: rgba(135,165,86,0.9); }
         @keyframes toast-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes window-in { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
       `}</style>
@@ -187,6 +190,37 @@ export default function MintDesktop() {
 
       {/* subtle texture */}
       <div style={{ position: "absolute", inset: 0, background: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E\")", pointerEvents: "none" }} />
+
+      {/* Portrait Widget, top-right */}
+      <div
+        onClick={(e) => { e.stopPropagation(); openApp("photo"); }}
+        style={{
+          position: "absolute", top: 20, right: 20, width: 128,
+          pointerEvents: "none", textAlign: "center",
+        }}
+      >
+        <div
+          className="portrait-widget"
+          style={{
+            width: 128, height: 156, borderRadius: 10, overflow: "hidden",
+            border: "2px solid rgba(135,165,86,0.55)", boxShadow: "0 10px 26px rgba(0,0,0,0.4)",
+          }}
+        >
+          <img
+            src="/portrait.jpg"
+            alt={PROFILE.name}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        </div>
+        <div style={{ marginTop: 8, fontFamily: "'Ubuntu Mono', monospace" }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.5, color: "rgba(223,232,222,0.92)", textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}>
+            {PROFILE.name.toUpperCase()}
+          </div>
+          <div style={{ fontSize: 10.5, color: "rgba(135,165,86,0.95)", marginTop: 2 }}>
+            {PROFILE.title}
+          </div>
+        </div>
+      </div>
 
       {/* Desktop icons */}
       <div style={{ position: "absolute", top: 20, left: 16, display: "flex", flexDirection: "column", gap: 4 }}>
@@ -630,6 +664,16 @@ function AppContent({ app }) {
             <Github size={15} /> View Source on GitHub
         </div>
       </div>        
+    );
+  }
+
+  if (app === "photo") {
+    return (
+      <div style={{ textAlign: "center" }}>
+        <img src="/portrait.jpg" alt={PROFILE.name} style={{ width: "100%", borderRadius: 8, border: "1px solid #3c453d" }} />
+        <div style={{ marginTop: 12, fontSize: 13.5, fontWeight: 600, color: "#f2f5f0" }}>{PROFILE.name}</div>
+        <div style={{ fontSize: 12, color: "#9db096", marginTop: 2 }}>{PROFILE.title} · {PROFILE.location}</div>
+      </div>
     );
   }
 
