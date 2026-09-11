@@ -209,6 +209,7 @@ export default function MintDesktop() {
         .portrait-widget:hover { transform: scale(1.03); border-color: rgba(135,165,86,0.9); }
         @keyframes toast-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes window-in { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+        @keyframes motd-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
 
 
@@ -270,6 +271,33 @@ export default function MintDesktop() {
         })}
       </div>
 
+      {/* Welcome / status widget */}
+      <div
+        style={{
+          position: "absolute", lef: 20, bottom: 56, maxWidth: 340,
+          pointerEvents: "none", fontFamily: "'Ubuntu Mono', monospace",
+          animation: "motd-in 0.5s ease 0.15s both",
+        }}
+      >
+        <div style={{ fontSize: 12, color: "rgba(135,165,86,0.9)" }}>$ whoami</div>
+        <div style={{ fontSize: 15, fontWeight: 700, color: "rgba(223,232,222,0.92)", marginTop: 2, textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}>
+          {PROFILE.name.toUpperCase()}
+        </div>
+        <div style={{ fontSize: 11.5, color: "rgba(180,195,175,0.8)", marginTop: 1 }}>
+          {PROFILE.title} · {PROFILE.location}
+        </div>
+        <div style={{ fontSize: 11.5, color: "rgba(200,210,195,0.75)", marginTop: 10, lineHeight: 1.5 }}>
+          Welcome to my desktop — double-click any icon on the left to explore.
+        </div>
+        <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 3 }}>
+          <div style={{ fontSize: 11, color: "rgba(200,210,195,0.85)" }}>
+            <span style={{ color: "rgba(135,165,86,0.95)", fontWeight: 700 }}>STATUS </span> Open to opportunities
+          </div>
+          <div style={{ fontSize: 11, color: "rgba(200,210,195,0.85)" }}>
+            <span style={{ color: "rgba(135,165,86,0.95)", fontWeight: 700 }}>FOCUS  </span> Full-stack development
+          </div>
+        </div>
+      </div>
       {/* Windows */}
       {windows.map((w) => (
         !w.minimized && (
