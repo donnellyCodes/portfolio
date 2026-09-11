@@ -1,10 +1,10 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { User, FolderOpen, FileText, Terminal as TerminalIcon, Mail,
   Trash2, Settings, Wifi, Volume2, ChevronUp, X, Minus, Square,
-  Github, Linkedin, Code2, Search, Image as ImageIcon
+  Github, Linkedin, Code2, Search, Image as ImageIcon, ExternalLink
 } from "lucide-react";
 
-/* Portfolio content (edit this to make it yours) */
+/* Portfolio content */
 const PROFILE = {
   name: "Donnelly Nyagoha Amaitsa",
   title: "Software Engineer",
@@ -14,10 +14,34 @@ const PROFILE = {
 };
 
 const PROJECTS = [
-  { name: "Habit-Grid", ext: "webapp", desc: "A minimalist habit tracker built with React and Postgres. 4k+ monthly active users.", tags: ["React", "Node", "Postgres"] },
-  { name: "Ledgerly", ext: "app", desc: "Small-business invoicing tool with automated reminders and Stripe billing.", tags: ["Next.js", "Stripe", "tRPC"] },
-  { name: "Pathfinder-CLI", ext: "tool", desc: "A command-line project scaffolder used by 300+ developers, published on npm.", tags: ["TypeScript", "Node"] },
-  { name: "Weathergram", ext: "webapp", desc: "Hyperlocal weather visualizer with live radar overlays and offline caching.", tags: ["Vue", "D3.js", "PWA"] },
+  {
+    name: "Delivery Service System (SendleDrop)",
+    ext: "webapp",
+    desc: "A full delivery operations platform, covering order processing, dispatching, live tracking, and admin workflows for individuals, companies, and shops.",
+    tags: ["React", "Node.js", "Express", "PostgreSQL", "Google Maps API"],
+    liveUrl: "https://sendledrop.com",
+  },
+  {
+    name: "Cleaning Service System (Stosam, stosam.com)",
+    ext: "webapp",
+    desc: "A service management platform for cleaning business, streamlining customer requests, worker assignment, scheduling, and operational tracking end to end.",
+    tags: ["React", "Node.js","Express", "PostgreSQL", "REST APIs"],
+    liveUrl: "https://stosam.com",
+  },
+  {
+    name: "Kazi-Connect",
+    ext: "webapp",
+    desc: "A blue-collar job finder platform connecting informal workers with employers, powered by AI-driven matching and real-time communication.",
+    tags: ["React", "Node.js", "Express.js", "PostgreSQL"],
+    repoUrl: "https://github.com/donnellyCodes/KAZI-CONNECT",
+  },
+  {
+    name: "Agentic RAG Travel Planner",
+    ext: "py",
+    desc: "An Agentic travel assistant that builds personalized trip plans based on destination, budget, and duration using a RAG architecture where an LLM powered agent calls live APIs as tools to gather information and reason about it.",
+    tags: ["Python", "RAG", "LLM Agents"],
+    repoUrl: "https://github.com/donnellyCodes/agent-travel-planner"
+  },
 ];
 
 const SKILL_CATEGORIES = [
@@ -196,7 +220,7 @@ export default function MintDesktop() {
         onClick={(e) => { e.stopPropagation(); openApp("photo"); }}
         style={{
           position: "absolute", top: 20, right: 20, width: 128,
-          pointerEvents: "none", textAlign: "center",
+          cursor: "pointer", textAlign: "center",
         }}
       >
         <div
@@ -563,6 +587,28 @@ function AppContent({ app }) {
                 <span key={t} style={{ fontSize: 10.5, background: "rgba(135,165,86,0.18)", color: "#a8c48a", padding: "2px 7px", borderRadius: 3 }}>{t}</span>
               ))}
             </div>
+            <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
+              {p.repoUrl && (
+                <a
+                  href={p.repoUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ display: "inline-flex", alignItems: "center", gap: 5, marginTop: 8, fontSize: 12.5, color: "#87a556", textDecoration: "none" }}
+                >
+                  <Github size={12} /> View on GitHub
+                </a>
+              )}
+              {p.liveUrl && (
+                <a
+                  href={p.liveUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12.5, color: "#87a556", textDecoration: "none" }}
+                >
+                  <ExternalLink size={12} /> Visit Site
+                </a>
+              )}
+            </div>
           </div>
         ))}
       </div>
@@ -853,7 +899,7 @@ function Terminal() {
     } else if (cmd === "whoami") {
       out = [`${PROFILE.name} — ${PROFILE.title}`, PROFILE.bio];
     } else if (cmd === "skills --list" || cmd === "skills") {
-      out = SKILLS_CATEGORIES.flatMap((s) => [` ${s.category}:`, ` ${s.desc}`]);
+      out = SKILL_CATEGORIES.flatMap((s) => [` ${s.category}:`, ` ${s.desc}`]);
     } else if (cmd === "projects") {
       out = PROJECTS.map((p) => `  ${p.name}.${p.ext}  — ${p.desc}`);
     } else if (cmd === "contact") {
